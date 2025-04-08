@@ -72,3 +72,18 @@ foreach ($file in $logFiles) {
 }
 
 Write-Host "Combined matching output saved to $outputFile"
+
+# Attempt to open the combined output file in Notepad++
+# First, try locating Notepad++ in the typical installation paths.
+$notepadPath = "C:\Program Files\Notepad++\notepad++.exe"
+if (-Not (Test-Path $notepadPath)) {
+    $notepadPath = "C:\Program Files (x86)\Notepad++\notepad++.exe"
+}
+
+if (Test-Path $notepadPath) {
+    Write-Host "Opening output in Notepad++..."
+    Start-Process $notepadPath -ArgumentList $outputFile
+} else {
+    Write-Warning "Notepad++ not found at common locations. Opening with default associated application."
+    Invoke-Item $outputFile
+}
